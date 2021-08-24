@@ -1,4 +1,4 @@
 module.exports = {
-  USER: 'USer',
-  CAR: 'Car'
+  O_AUTH: 'O_Auth',
+  USER: 'User'
 };

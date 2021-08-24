@@ -1,8 +1,11 @@
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-const { userRouter } = require('./routes');
+const { constants } = require('./constants');
+const { authRouter, userRouter } = require('./routes');
 
 const app = express();
 
@@ -13,31 +16,32 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'static')));
 
+app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('*', _notFoundHandler);
-app.use(_handleErrors);
+app.use(_hadleErrors);
 
-app.listen(3000, () => {
-  console.log('App listen 3000');
+app.listen(constants.PORT, () => {
+  console.log(`App listen ${constants.PORT}`);
 });
 
 // eslint-disable-next-line no-unused-vars
-function _handleErrors(err, req, res, next) {
+function _hadleErrors(err, req, res, next) {
   res
     .status(err.status)
     .json({
       message: err.message || 'Unknown error',
-      customCode: err.code || '0'
+      customCode: err.code || 0
     });
 }
 
 function _notFoundHandler(err, req, res, next) {
   next({
     status: err.status || 404,
-    message: err.message || 'route not found'
+    message: err.message || 'Rout not fond'
   });
 }
 
 function _mongooseConnector() {
-  mongoose.connect('mongodb://localhost:27017/feb-2021', { useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.connect(constants.DB_CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 }
