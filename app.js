@@ -1,5 +1,6 @@
 
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const path = require('path');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'static')));
 
+app.use(fileUpload({}));
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('*', _notFoundHandler);

@@ -18,9 +18,9 @@ module.exports = {
 
         car: Joi.boolean(),
 
-        girls: Joi.array()
-        .items(singleGirlScheme)
-        .when('car', { is: true, then: Joi.required() })
+        // girls: Joi.array()
+        // .items(singleGirlScheme)
+        // .when('car', { is: true, then: Joi.required() })
     })
 };
  

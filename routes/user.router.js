@@ -2,18 +2,20 @@ const router = require('express').Router();
 
 const { userRolesEnum } = require('../constants')
 const userController = require('../controllers/user.controller');
-const { userMiddleware } = require('../middlewares');
+const { fileMiddleware, userMiddleware } = require('../middlewares');
 
 router.get('/', userController.getAllUsers);
 
 router.post('/',
-userMiddleware.checkUserValidity, 
-userMiddleware.checkIsEmailExist, 
-userController.createUser);
+    fileMiddleware.checkFiles,
+    userMiddleware.checkUserValidity, 
+    userMiddleware.checkIsEmailExist, 
+    userController.createUser
+);
 
 router.use('/:userId', userMiddleware.getUserByDynamicParam('userId', 'params'))
 
-router.route('/:userId') /////////////////////////////////////////////////////////
+router.route('/:userId')
     .delete(userMiddleware.checkUserRole([userRolesEnum.ADMIN]) ,userController.deleteUserById)    
     .get(userController.getUserById)
     .put(userController.updateUsers)
